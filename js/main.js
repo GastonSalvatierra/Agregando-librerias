@@ -2,9 +2,6 @@ import { BBDD } from "./Stock.js";
 
 let carrito = [];
 
-function carritoVacio() {
-    carrito.length === 0 && alert('El carrito esta vacio compra algo');   
-}
 
 function renderizarProductos(){
 
@@ -43,6 +40,16 @@ function renderizarProductos(){
 
         producto.querySelector('button').addEventListener('click', ()=>{
             
+            Toastify({
+
+                text: "Agregaste un producto al carrito!",
+                
+                duration: 3000,
+        
+                gravity: "bottom"
+                
+                }).showToast();
+
             agregarProductosAlCarrito(p.id);
             
         })
@@ -60,6 +67,7 @@ function agregarProductosAlCarrito(id){
     let productoEnCarrito = carrito.find(producto => producto.id === id);
 
     (productoEnCarrito = carrito.find(producto => producto.id === id))? producto.cantidad++ : ((producto.cantidad = 1), (carrito.push(producto)));
+
 
     renderizarCarrito();
     calcularTotal();
@@ -106,6 +114,13 @@ function renderizarCarrito(){
         `
 
         producto.querySelector('button').addEventListener('click', ()=>{
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Producto eliminado!',
+                showConfirmButton: false,
+                timer: 500,
+              })
         
             eliminarProductoDelCarrito(index)
         })
@@ -120,12 +135,11 @@ function renderizarCarrito(){
 
 function eliminarProductoDelCarrito(indice){
 
-    (carrito[indice].cantidad <= 1)? ((carrito.splice(indice,1)) , (alert('El producto fue eliminado del carrito'))) : carrito[indice].cantidad--
+    (carrito[indice].cantidad <= 1)? ((carrito.splice(indice,1))) : carrito[indice].cantidad--
 
     renderizarCarrito();
     calcularTotal();
     cantidadTotal();
-    carritoVacio();
 }
 
 function calcularTotal(){
